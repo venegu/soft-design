@@ -1,25 +1,10 @@
-/*
-This assignment is adapted from a textbook excersise in which you need to design a HealthProfile class for a person. The class attributes should include the person’s first name, last name, gender, date of birth (consisting of separate attributes for the month, day and year of birth), height (in inches) and weight (in pounds). Your class should have a constructor that receives this data. For each attribute, provide set and get methods. The class also should include methods that calculate and return the user’s age in years, maximum heart rate, target-heart-rate range, and body mass index, BMI, as explained below.
-
-Your mission is to write a Java application that prompts for the person’s information, instantiates an object of class HealthProfile for that person and prints the information from that object—including the person’s first name, last name, gender, date of birth, height and weight—then calculates and prints theperson’s age in years, BMI, maximum heart rate and target-heart-rate range. The output format is free.
-
-Target-Heart-Rate: According to the American Heart Association (AHA), the formula for calculating your maximum heart rate in beats per minute is 220 minus your age in years. Your target heart rate is a range that is 50-85% of your maximum heart rate. Note: These formulas are estimates provided by the AHA. Maximum and target heart rates may vary based on the health, fitness and gender of the individual. Always consult a physician or qualified health care professional before beginning or modifying an exercise program.
-
-Body Mass Index: Adolphe Quetelet devised this index as dividing weight (in pounds) by the square of height followed by multiplying a scale constant 703. The nomal range is between 19.5 and 24.9. Less than this range is considered underweight and 30 or greater is considered obese.
-
-Realize your implementation that satisfies the following minimal requirements:
-
-properly exhibits right implementation, i.e., readable and compilable coding
-properly reads personal information from terminal
-properly writes maximum and target heart rates as well as BMI to terminal
-properly writes error message to terminal in response to incorrect input
-Note that your implementation must validate all of your input. As a hint, explore the 3rd implementation of date validateion which is simplest for date validation. You may be tempted to realize dialog boxes for input interface (read textbook 3.6). Explore your own extensions!
- */
 package healthprofile;
 
 /**
  *
  * @author Lisa Maldonado
+ * CSC 221
+ * Professor Akira Kawaguchi
  */
 
 import java.text.DateFormat;
@@ -27,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 public class HealthProfile {
@@ -36,8 +21,8 @@ public class HealthProfile {
    private String lastName;
    private String gender;
    private String dateOfBirth;
-   private int height;
-   private int weight;
+   private double height;
+   private double weight;
 
    /* Basic Constructor */
    public HealthProfile(){
@@ -45,12 +30,12 @@ public class HealthProfile {
    }
 
    /* Constructor with all the input data */
-   public HealthProfile(String firstName, String lastName, String gender, String dateOfBirth, int height, int weight){
+   public HealthProfile(String firstName, String lastName, String gender, String dateOfBirth, double height, double weight){
       setData(firstName, lastName, gender, dateOfBirth, height, weight);
    }
 
-   /* Setter Methods */
-   public void setData(String firstName, String lastName, String gender, String dateOfBirth, int height, int weight){
+   /* Set Methods */
+   public void setData(String firstName, String lastName, String gender, String dateOfBirth, double height, double weight){
       setFirstName(firstName);
       setLastName(lastName);
       setGender(gender);
@@ -90,7 +75,7 @@ public class HealthProfile {
       this.dateOfBirth=dateOfBirth;
    }
 
-   public void setHeight(int height){
+   public void setHeight(double height){
       if (height <= 0){
          height = 0;
       }
@@ -99,7 +84,7 @@ public class HealthProfile {
       }
    }
 
-   public void setWeight(int weight){
+   public void setWeight(double weight){
       if (weight <= 0){
          weight = 0;
       }
@@ -108,7 +93,7 @@ public class HealthProfile {
       }
    }
 
-   /* Getter methods */
+   /* Get methods */
    public String getFirstName(){
       return firstName;
    }
@@ -125,14 +110,63 @@ public class HealthProfile {
       return dateOfBirth;
    }
 
-   public int getHeight(){
+   public double getHeight(){
       return height;
    }
 
-   public int getWeight(){
+   public double getWeight(){
       return weight;
    }
 
+   public static Boolean validateFirstName(String firstName){
+     //Scanner input = new Scanner(System.in);
+     if (firstName.trim().isEmpty()){
+         return false;
+      }
+      else{
+         return true;
+      }
+   }
+
+   public static Boolean validateLastName(String lastName){
+      //Scanner input = new Scanner(System.in);
+      if (lastName.trim().isEmpty()){
+         return false;
+      }
+      else{
+         return true;
+      }
+   }
+
+   public static Boolean validateGender(String gender){
+      //Scanner input = new Scanner(System.in);
+      if (gender.equals("Male")||gender.equals("male")||gender.equals("female")||gender.equals("Female")){
+         return true;
+      }
+      else {
+         return false;
+      }
+   }
+
+   public static Boolean validateHeight(double height){
+      if(height <= 0){
+         return false;
+      }
+      else {
+         return true;
+      }
+   }
+
+   public static Boolean validateWeight(double weight){
+      if(weight <= 0){
+         return false;
+      }
+      else {
+         return true;
+      }
+   }
+
+   /* Methods for this class */
    public String personalInfo(){
       return '\n'+"Health Profile"+'\n'+'\n'+"Name: "+getFirstName()+" "+getLastName()+"\n"+"Gender: "+getGender()+"\n"+"Date of Birth: "+getDob()+'\n'+"Height: "+getHeight()+'\n'+"Weight: "+getWeight();
    }
@@ -152,8 +186,8 @@ public class HealthProfile {
    }
 
    public double bmi(){
-      double w = (double)getWeight();
-      double h = (double)getHeight();
+      double w = getWeight();
+      double h = getHeight();
       double bmi = (w /(h*h))*207;
       return bmi;
    }
@@ -172,59 +206,144 @@ public class HealthProfile {
 
    /**
     * @param args the command line arguments
+    * @throws java.text.ParseException
     */
    public static void main(String[] args) throws ParseException {
       // create Scanner to obtain input from command window
       Scanner input = new Scanner(System.in);
 
-      // Name
+      /* Beginning of inputs */
+
+      /* First name */
       System.out.println("What is your first name?");
       String firstName = input.nextLine();
 
+      /* Validating first name */
+      Boolean firstValid = validateFirstName(firstName);
+      while(firstValid == false){
+         System.out.println("I am a simple machine, I didn't understand that. Please re-enter your first name and make sure there aren't any extra spaces.");
+         String f = input.nextLine();
+         firstValid = validateLastName(f);
+         firstName = f;
+      }
+
+      /* Last name */
       System.out.println("What is your last name?");
       String lastName = input.nextLine();
 
+      /* Validating last name */
+      Boolean lastValid = validateLastName(lastName);
+
+      while(lastValid == false){
+         System.out.println("I am a simple machine, I didn't understand that. Please re-enter your last name and make sure there aren't any extra spaces.");
+         String l = input.nextLine();
+         lastValid = validateLastName(l);
+         lastName = l;
+      }
 
       System.out.println("What is your gender?");
       String gender = input.nextLine();
 
+      /* Validating gender */
+      Boolean genValid = validateGender(gender);
+
+      while(genValid == false){
+         System.out.println("I am a simple machine, I didn't understand that. Please re-enter your gender, make sure you enter either 'Male' or 'Female' and that there aren't any extra spaces.");
+         String g = input.nextLine();
+         genValid = validateGender(g);
+         gender = g;
+      }
+
       // DOB
-      System.out.print("Enter Date of Birth (mm/dd/YYYY ): ");
+      System.out.print("Enter Date of Birth (mm/dd/yyyy): ");
       String d = input.nextLine();
 
-      /* Error handling & Validating DOB */
-      try{
+      /* Attempt at Error handling & Validating DOB */
+     /* try{
       Calendar cal = Calendar.getInstance();
-      DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+      DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());*/
       /* The following line makes Date into a String */
-      cal.setTime(sdf.parse(d));
+    //  cal.setTime(sdf.parse(d));
 
-      } catch (ParseException e) {
+      /* } catch (ParseException e) {
          System.out.println("Please input DOB in this format: MM/dd/yyyy");
          String c = input.nextLine();
          DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
          d=c ;
+      }*/
+
+      /* Error handling & Validating DOB */
+      try {
+         GregorianCalendar gc = new GregorianCalendar();
+         gc.setLenient(false);  // important
+
+         /* Splitting input into an array based on the '/' */
+         String str[] = d.split("/");
+         int day = Integer.parseInt(str[0]);
+         int month = Integer.parseInt(str[1]);
+         int year = Integer.parseInt(str[2]);
+         gc.set(GregorianCalendar.YEAR, year);
+         gc.set(GregorianCalendar.MONTH, month);
+         gc.set(GregorianCalendar.DATE, day);
+
+         gc.getTime();
       }
+      catch (Exception e) {
+         System.out.println("I didn't understand that. Please input DOB in this format: mm/dd/yyyy");
+         String c = input.nextLine();
+         d = c;
+      }
+
 
       /* Getting today's date */
       DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
       Date today = Calendar.getInstance().getTime();
       String dateToday = df.format(today);
-      //System.out.println(dateToday);
       String todaySub = dateToday.substring(dateToday.lastIndexOf('/')+1);
-      //System.out.println(todaySub);
+
       /* To make string int (previous method would not work) */
       Integer intToday = Integer.valueOf(todaySub);
-      //System.out.println(intToday-1);
 
-      /* Height and weight for BMI */
+
+      /* Height */
       System.out.println("What is your height (inches)?");
-      int height = input.nextInt();
+      /* Validating input is a double */
+      while(!input.hasNextDouble()){
+         System.out.println("Please only put in numbers in this field.");
+         input.next();
+      }
+      double height = input.nextInt();
 
+      /* Validating height*/
+      Boolean heightValid = validateHeight(height);
+
+      while(heightValid == false){
+         System.out.println("Please re-enter your height and make sure it's bigger than 0.");
+         int h = input.nextInt();
+         heightValid = validateHeight(h);
+         height = h;
+      }
+
+      /* Weight */
       System.out.println("What is your weight (lbs)?");
-      int weight = input.nextInt();
+      /* Validating input is a double */
+      while(!input.hasNextDouble()){
+         System.out.println("Please only put in numbers in this field.");
+         input.next();
+      }
+      double weight = input.nextDouble();
 
-      /* Instantiating the variable */
+      Boolean weightValid = validateWeight(weight);
+
+      /* Validating weight */
+      while(weightValid == false){
+         System.out.println("Please re-enter your weight and make sure it's bigger than 0.");
+         double w = input.nextDouble();
+         weightValid = validateWeight(w);
+         weight = w;
+      }
+
+      /* Instantiating the object */
       HealthProfile profile = new HealthProfile(firstName, lastName, gender, d, height, weight);
 
       /* Getting paramaters to find age */
