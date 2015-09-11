@@ -1,4 +1,4 @@
-package healthprofile;
+//package healthprofile;
 
 /**
  * To compile in the terminal run the following command outside of the package
@@ -371,14 +371,14 @@ public class HealthProfile {
          System.out.println("Please only put in numbers in this field.");
          input.next();
       }
-      double height = input.nextInt();
+      double height = input.nextDouble();
 
       /* Validating height*/
       Boolean heightValid = validateHeight(height);
 
       while(heightValid == false){
          System.out.println("Please re-enter your height (inches) and make sure it's bigger than 0, but less than 108 inches.");
-         int h = input.nextInt();
+         double h = input.nextDouble();
          heightValid = validateHeight(h);
          height = h;
       }
@@ -427,6 +427,7 @@ public class HealthProfile {
       String name = profile.personalInfo();
       System.out.println(name+'\n'+"Approximate Age: "+age+'\n'+"BMI: "+bmi+'\n'+"Maximum Heart Rate: "+maxHeart+'\n'+"Target Heart Rate Range: "+targetHeart);
 
+      input.close();
    }
 
 }
