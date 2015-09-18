@@ -1,2 +1,2 @@
 # soft-design
-Software Design. Womp. 
+Womp, please don't copy code~
