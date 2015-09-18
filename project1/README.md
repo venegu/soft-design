@@ -1,6 +1,8 @@
 Health Record Computation
 =========================
 
+**Code for this assignment was pushed to Github Friday, September 18th, 2015 - 9 days after the due date (September 9th, 2015) to prevent copying**
+
 This assignment is adapted from a textbook excersise in which you need to design a HealthProfile class for a person. The class attributes should include the person’s first name, last name, gender, date of birth (consisting of separate attributes for the month, day and year of birth), height (in inches) and weight (in pounds). Your class should have a constructor that receives this data. For each attribute, provide set and get methods. The class also should include methods that calculate and return the user’s age in years, maximum heart rate, target-heart-rate range, and body mass index, BMI, as explained below.
 
 Your mission is to write a Java application that prompts for the person’s information, instantiates an object of class HealthProfile for that person and prints the information from that object—including the person’s first name, last name, gender, date of birth, height and weight—then calculates and prints theperson’s age in years, BMI, maximum heart rate and target-heart-rate range. The output format is free.
@@ -17,5 +19,3 @@ Realize your implementation that satisfies the following minimal requirements:
    - properly writes error message to terminal in response to incorrect input
 
 Note that your implementation must validate all of your input. As a hint, explore the 3rd implementation of date validateion which is simplest for date validation. You may be tempted to realize dialog boxes for input interface (read textbook 3.6). Explore your own extensions!
-
-** Pushed to Github Friday, September 18th, 2015 - 9 days after the due date to prevent copying **
