@@ -17,3 +17,5 @@ Realize your implementation that satisfies the following minimal requirements:
    - properly writes error message to terminal in response to incorrect input
 
 Note that your implementation must validate all of your input. As a hint, explore the 3rd implementation of date validateion which is simplest for date validation. You may be tempted to realize dialog boxes for input interface (read textbook 3.6). Explore your own extensions!
+
+* Pushed to Github Friday, September 18th, 2015 - 9 days after the due date *
