@@ -1,50 +1,67 @@
-package battleship;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import java.security.SecureRandom;
-import java.util.Arrays;
+package battleship;
 
 /**
  *
  * @author gale
  */
-public class Battleship {
+import javax.swing.*;
+import java.awt.*;
 
-   /**
-    * @param args the command line arguments
-    */
-   public static void main(String[] args) {
-      // TODO code application logic here
-      /* Generating the board 10 x 10  */
-      int rows = 10;
-      int columns = 10;
+public class Battleship extends JApplet
+{
+    private static final int NUM_ROWS = 10;
+    private static final int NUM_COLS = 10;
+    private static final int PANEL_WIDTH = 601;
+    private static final int PANEL_HEIGHT = 601;
 
-      int[][] board = new int[rows][columns];
+    private BattleshipPanel battleshipPanel;
+    private HitMissPanel hitMissPanel;
 
-      for(int i = 0; i<rows; i++)
-          for(int j = 0; j<columns; j++)
-              board[i][j] = 0;
+    public Battleship()
+    {
+        hitMissPanel = new HitMissPanel(PANEL_WIDTH, 50);
+        battleshipPanel = new BattleshipPanel(PANEL_WIDTH, PANEL_HEIGHT,
+            new BattleshipGrid(NUM_ROWS, NUM_COLS), hitMissPanel);
+    }
 
-      for(int i = 0; i<rows; i++) {
-          for(int j = 0; j<columns; j++) {
-              System.out.print(board[i][j]);
-          }
-          System.out.println();
-      }
-      /* To get randomized ship sizes */
-      SecureRandom random = new SecureRandom();
+    public void init()
+    {
+        try
+        {
+            SwingUtilities.invokeAndWait(
+                new Runnable()
+                {
+                    public void run()
+                    {
+                        getContentPane().setLayout(new BorderLayout());
+                        add(battleshipPanel, BorderLayout.CENTER);
+                        add(hitMissPanel, BorderLayout.PAGE_END);
+                    }
+                }
+            );
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-      /* Loop to place ships */
-      int shipCount = 0;
-      for(int s = 1; s <= 6; s++){
-         int max = 5;
-         int min = 2;
-         int shipLength = random.nextInt(max-min+1)+min;
-         System.out.println(shipLength);
+    public static void main(String[] args)
+    {
+        Battleship applet = new Battleship();
+        applet.init();
 
-         shipCount = shipCount+shipLength;
-
-      }
-      System.out.println(shipCount);
-   }
-
+        JFrame frame = new JFrame("Battleship!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(applet);
+        frame.pack();
+        frame.setVisible(true);
+        applet.start();
+    }
 }

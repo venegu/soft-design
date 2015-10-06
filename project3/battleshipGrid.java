@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleshipdriver;
+package battleship;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -12,14 +12,14 @@ import java.util.Arrays;
  *
  * @author gale
  */
-public class battleshipGrid {
+public class BattleshipGrid {
    public static final int OUT_OF_BOUNDS = -1;
 
     // values to be used in the 2D grid
     public static final int EMPTY = 0;
     public static final int SHIP = 1;
-    public static final int HIT = 2;
-    public static final int MISS = 3;
+    public static final int HIT = 6;
+    public static final int MISS = 7;
 
     // directions used for shape placement
     private static final int DIRECTION_RIGHT = 0;
@@ -63,7 +63,7 @@ public class battleshipGrid {
      * @param    numRows    the number of rows in this grid
      * @param    numCols    the number of columns in this grid
      */
-    public battleshipGrid(int numRows, int numCols)
+    public BattleshipGrid(int numRows, int numCols)
     {
         NUM_ROWS = numRows;
         NUM_COLS = numCols;
@@ -138,22 +138,29 @@ public class battleshipGrid {
            ship += length;
            zeroes += 0;
          }
-         System.out.println(row);
-         System.out.println(ship);
-         System.out.println(zeroes);
-         /*  */
+
          int index = row.indexOf(zeroes);
          //System.out.println(index);
-         for(int s = index; s < length; s++){
-            grid[r][s]= length;
+
+         while(index == -1){
+            row = "";
+            r = random.nextInt(max-min+1)+min;
+
+            for(int i = 0; i < 10; i++){
+               row += grid[r][i];
+            }
+            System.out.println("Row: " + row);
+            index = row.indexOf(zeroes);
          }
-
-         //System.out.println(r);
-         //break;
+         if(index != -1) {
+            int insertionMark = 0;
+            for(int s = index; insertionMark < ship.length(); s++){
+               grid[r][s] = length;
+               /* Each time we place a piece of the current ship, we increase by 1 */
+               insertionMark += 1;
+            }
+         }
        }
-
-       System.out.println();
-
     }
 
 
@@ -174,15 +181,27 @@ public class battleshipGrid {
      * @param    row    the row of the cell to attack
      * @param    col    the column of the cell to attack
      *
-     * @return   true if the attack results in a ship being hit (even
+     * @return   true if the attack results in ship being hit (even
      *           if the ship at that cell has already been hit),
      *           false otherwise
      */
     public boolean attack(int row, int col)
     {
-        // ::: FILL IN THIS CODE
-
-        return false;
+       System.out.println("ROW: "+row+" "+"COL: "+col);
+        if (grid[row][col] > 0 && grid[row][col] <= 5){
+           // Hit a ship
+           grid[row][col] = HIT;
+           totalHitsRequired--;
+           return true;
+        }
+        else if(grid[row][col] == 0) {
+           // Didn't hit a ship
+           grid[row][col] = MISS;
+           return false;
+        }
+        else {
+           return false;
+        }
     }
 
 
@@ -198,8 +217,14 @@ public class battleshipGrid {
         // ::: FILL IN THIS CODE. NOTE THAT THERE IS A VARIABLE NAMED
         //     totalHitsRequired THAT CONTAINS THE TOTAL NUMBER OF HITS
         //     REQUIRED TO DESTROY ALL SHIPS
-
-        return false;
+       if (totalHitsRequired == 0){
+          System.out.println("You win!");
+          return true;
+       }
+       else {
+          System.out.println("You didn't win yet...");
+          return false;
+       }
     }
 
 
