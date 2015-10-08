@@ -8,174 +8,188 @@ package battleship;
 
 /**
  *
- * @author gale
+ * @author Lisa Maldonado
+ * CSC 221 Professor Kawaguchi
  */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Represents a BattleshipGrid graphically.
- */
+
+/* Graphical foo */
 public class BattleshipPanel extends JPanel
 {
-    // the width and height of this panel
-    private final int PANEL_WIDTH;
-    private final int PANEL_HEIGHT;
+   // the width and height of this panel
+   private final int PANEL_WIDTH;
+   private final int PANEL_HEIGHT;
 
-    private BattleshipGrid grid;
-    private HitMissPanel hitMissPanel;
+   private BattleshipGrid grid;
+   private HitMissPanel hitMissPanel;
 
-    private int numHits;
-    private int numMisses;
+   private boolean hint = false;
 
-    public BattleshipPanel(int width, int height, BattleshipGrid battleshipGrid, HitMissPanel hmp)
-    {
-        PANEL_WIDTH = width;
-        PANEL_HEIGHT = height;
-        grid = battleshipGrid;
-        hitMissPanel = hmp;
+   private int numHits;
+   private int numMisses;
 
-        numHits = 0;
-        numMisses = 0;
+   public BattleshipPanel(int width, int height, BattleshipGrid battleshipGrid, HitMissPanel hmp)
+   {
+      PANEL_WIDTH = width;
+      PANEL_HEIGHT = height;
+      grid = battleshipGrid;
+      hitMissPanel = hmp;
 
-        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+      numHits = 0;
+      numMisses = 0;
 
-        addMouseListener(
-            new MouseAdapter()
-            {
-                public void mouseClicked(MouseEvent e)
-                {
-                    // attack the grid based on where the user clicked
-                    attackGrid(e.getX(), e.getY());
+      setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
-                    // update the graphics
-                    repaint();
+      /* reset button */
+      JButton reset = new JButton("Reset");
+      reset.addActionListener(new Reset());
+      add(reset);
 
-                    // have all of the ships been destroyed?
-                    if (grid.allDestroyed())
-                    {
-                        JOptionPane.showMessageDialog(null, "You win!");
-                        System.exit(0);
-                    }
-                }
+      /* quit button */
+      JButton quit = new JButton("Quit");
+      quit.addActionListener(new Quit());
+      add(quit);
+
+      /* hint button */
+      JButton hint = new JButton("Hint");
+      hint.addActionListener(new Hint());
+      add(hint);
+
+      addMouseListener(
+         new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+               // attack the grid based on where the user clicked
+               attackGrid(e.getX(), e.getY());
+
+               // update the graphics
+               repaint();
+
+               // have all of the ships been destroyed?
+               if (grid.allDestroyed())
+               {
+                  JOptionPane.showMessageDialog(null, "You win!");
+                  System.exit(0);
+               }
             }
-        );
-    }
+         }
+      );
+   }
 
-    public void paintComponent(Graphics g)
-    {
-        setBackground(Color.BLACK);
-        super.paintComponent(g);
+   /* Quits the entire game */
+   class Quit implements ActionListener {
+      Quit() {}
 
-        drawGridLines(g);
-        drawGridCells(g);
-    }
+      public void actionPerformed(ActionEvent e) {
+         System.exit(0);
+      }
+   }
 
-    /**
-     * Draw grid lines.
-     *
-     * @param    g    the graphics context on which to draw the grid lines
-     */
-    private void drawGridLines(Graphics g)
-    {
-        g.setColor(Color.WHITE);
+   /* Re-starts everything so you can try again! */
+   class Reset implements ActionListener {
+      Reset() {}
 
-        // draw vertical grid lines
-        for (int x = 0; x < PANEL_WIDTH; x += PANEL_WIDTH / grid.NUM_COLS)
-        {
+      public void actionPerformed(ActionEvent e)
+      {
+         /* running grid related things start the game over */
+         grid.initializeGrid();
+         grid.calculateTotalHitsRequired();
+         grid.placeAllShips();
+
+         /* Resetting misses and hits */
+         numMisses = 0;
+         numHits = 0;
+         hitMissPanel.setStats(numHits, numMisses);
+
+         /* Setting to blank grid */
+         repaint();
+      }
+   }
+
+
+   /* For foo relate to hint button */
+   class Hint implements ActionListener {
+      Hint() {}
+
+      public void actionPerformed(ActionEvent e)
+      {
+         hint = true;
+         repaint();
+      }
+   }
+
+   /* Painting the board */
+   public void paintComponent(Graphics g)
+   {
+      setBackground(Color.darkGray);
+      super.paintComponent(g);
+
+      drawGridLines(g);
+      drawGridCells(g);
+
+      if (hint) {
+         hint = false;
+      }
+   }
+
+   /* Grid lines */
+   private void drawGridLines(Graphics g) {
+      g.setColor(Color.WHITE);
+
+      // draw vertical grid lines
+      for (int x = 0; x < PANEL_WIDTH; x += PANEL_WIDTH / grid.NUM_COLS) {
             g.drawLine(x, 0, x, PANEL_HEIGHT - 1);
-        }
+      }
 
-        // draw horizontal grid lines
-        for (int y = 0; y < PANEL_HEIGHT; y += PANEL_HEIGHT / grid.NUM_ROWS)
-        {
-            g.drawLine(0, y, PANEL_WIDTH - 1, y);
-        }
-    }
+      // draw horizontal grid lines
+      for (int y = 0; y < PANEL_HEIGHT; y += PANEL_HEIGHT / grid.NUM_ROWS) {
+         g.drawLine(0, y, PANEL_WIDTH - 1, y);
+      }
+   }
 
+   private void drawGridCells(Graphics g) {
+      for (int row = 0; row < 10; row++) {
+         for (int col = 0; col < 10; col++) {
+            int c = (col * 60)+ 2;
+            int r = (row * 60)+ 2;
 
-
-    /**
-     * Draws the grid cells such that empty cells are represented by
-     * black squares, misses by blue squares, and hits by red squares.
-     *
-     * @param    g    the graphics context on which to draw the grid cells
-     */
-    private void drawGridCells(Graphics g)
-    {
-        // iterate over the entire grid
-        for (int row = 0; row < grid.NUM_ROWS; row++)
-        {
-            for (int col = 0; col < grid.NUM_COLS; col++)
-            {
-
-               if(grid.getCell(row, col)== 6){
-
-                  /* Empty or Hit - black */
-                  int c = (col) * 60;
-                  int r = ((row) * 60);
-                  System.out.println("RED:  "+"c: " + c + " "+"r: "+r+ " " +"col: " + col+ " "+ "row: "+ row+ " "+ "val: "+grid.getCell(row, col));
-                  g.fillOval(r, c , 59, 59);
-                  g.setColor(Color.RED);
-               }
-               else if(grid.getCell(row, col) == 7){
-                  /* Hit - red */
-                  int c = (col) * 60;
-                  int r = ((row) * 60);
-                  System.out.println("BLUE:  "+"c: " + c + " "+"r: "+r+ " " +"col: " + col+ " "+ "row: "+ row+ " "+ "val: "+grid.getCell(row, col));
-                  g.fillOval(r, c , 59, 59);
-                  g.setColor(Color.BLUE);
-               }
-               else {
-                  /* Miss - blue */
-                  int c = (col) * 60;
-                  int r = (row) * 60;
-                  System.out.println("WHITE:  "+"c: " + c + " "+"r: "+r+ " " +"col: " + col+ " "+ "row: "+ row+ " "+ "val: "+grid.getCell(row, col));
-                  g.fillOval(r, c , 60, 60);
-                  g.setColor(Color.WHITE);
-               }
-                // ::: DETERMINE THE VALUE OF THE CELL AT THE CURRENT
-                //     ROW AND COLUMN AND DRAW A RECTANGLE OF THE
-                //     APPROPRIATE SIZE AND COLOR:
-                //     - BLACK FOR EMPTY
-                //     - BLUE FOR MISSES
-                //     - RED FOR HITS
-                //     REMEMBER, USE g.setColor(Color.RED) (FOR EXAMPLE)
-                //     TO CHANGE YOUR COLOR BEFORE YOU DRAW YOUR RECTANGLE
-                //     USING THE g.fillRect METHOD.
-
-
-
+            /* Hit - Pink */
+            if (grid.getCell(row, col) == 2) {
+               g.setColor(Color.pink);
+               g.fillOval(c, r, 56, 56);
             }
-        }
-    }
 
+            /* Miss - Blue */
+            if (grid.getCell(row, col) == 3) {
+               g.setColor(Color.cyan);
+               g.fillOval(c, r, 56, 56);
+            }
 
+            /* Hint - White */
+            if (hint) {
+               if (grid.getCell(row, col) == 1) {
+                  g.setColor(Color.white);
+                  g.fillOval(c, r, 56, 56);
+               }
+            }
+         }
+      }
+   }
 
-    /**
-     * Determines which grid cell the user clicked on and then attacks
-     * that grid cell. If the user has already attacked the cell that
-     * was clicked on, this method does not attack the cell. This
-     * method also updates the total number of hits and misses and
-     * updates the hit/miss panel accordingly.
-     *
-     * @param    mouseX    the x-coordinate of the user's mouse click
-     * @param    mouseY    the y-coordinate of the user's mouse click
-     */
-    private void attackGrid(int mouseX, int mouseY)
-    {
-        // ::: FILL IN THIS CODE
-       int x = mouseX/60;
-       int y = mouseY/60;
-       System.out.println("ATTACK: x: " + x + " "+ "y: "+y);
-       if(grid.attack(x,y) == true){
-
-          numHits++;
-       }
-       else if (grid.attack(x, y) == false) {
-          numMisses++;
-       }
-       hitMissPanel.setStats(numHits, numMisses);
-    }
+   /* Getting the cell the user clicked & feeding that to attack function */
+   private void attackGrid(int mouseX, int mouseY)
+   {
+      int c = mouseX/60;
+      int r = mouseY/60;
+      if(grid.attack(r, c) == true){
+         numHits++;
+      }
+      else if (grid.attack(r, c) == false) {
+         numMisses++;
+      }
+      hitMissPanel.setStats(numHits, numMisses);
+      grid.attack(r, c);
+   }
 }
