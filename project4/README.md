@@ -3,7 +3,8 @@ Comparator Application
 
 Consider the management and maintenance of a "library database" in a certain school. It holds the information of material resources in use for students in that school. This information is recorded based on the object-oriented design. The skeleton of the database structure is shown using the Unified Modeling Language (UML) diagramming method illustrated below. UML's standard notion is still being finalized for global use, and so annotations, such as (has-a) to express object composition relationship and (implements) to express the use of an interface, are added to the diagram:
 
-< Image goes here >
+![alt text](https://github.com/venegu/soft-design/raw/master/images/prog3-Fig.png "Project 4 Image")
+
 
 The above structure shows instance variables and constructors only. Plus sign (+) indicates public visibility whereas minus sign (-) sets out private scope. The Database may use ArrayList instead of array to hold the collection of Item's references. Add an appropriate set of overloading/overriding methods to support the object hierarchy assumed in this context. Implement the hierarchy, populate a Database object with at least two items per non-abstract class instances, and show the "unsorted" and "sorted" list of the set of those instances. The minimal requirement of this assignment is to realize the database sort based on the lexicographical order of ids as well as any combination of values of instance variables. For instance, database records are shown based on the lexicographical order of "title," followed by "addedOn," and followed by "director."
 
