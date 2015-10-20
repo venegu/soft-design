@@ -6,18 +6,18 @@ This assignment needs some effort. Don't wait until the last minute. Your missio
 
 *Six ships are secretly placed to 10 x 10 grid. By clicking the place the use will see if ship is bomed (with red marking) or not (with gray marking).*
 
-** Image 1 goes here **
+![alt text](https://github.com/venegu/soft-design/raw/master/images/game-start.png "Start")
 
 *The hint button will show the arrangement of ships (with black mark). The hint will disappear when the user clicks the board for bombing.*
 
-** Image 2 goes here **
+![alt text](https://github.com/venegu/soft-design/raw/master/images/game-hint.png "Hint")
 
 *The user can restart a new game with a different ship formation as well as quit game any time. The statistics of hit and miss counts will be reset also.*
 
-** Image 3 goes here **
+![alt text](https://github.com/venegu/soft-design/raw/master/images/game-reset.png "Reset")
 
 *The game is over if the user bombed all the ships.*
 
-** Image 4 goes here **
+![alt text](https://github.com/venegu/soft-design/raw/master/images/game-end.png "End")
 
 The computer arranges 6 ships of sizes between 2 and 4. The ship's vertical or horizontal alignment is chosen at random. There are many Java implementations of battleship game on the web. Adaptation of such implementation is up to you (clearly note your citation however). The closest idea and therefore I did implement by myself is [here](http://www.cs.unc.edu/~luv/teaching/COMP110/assignments/program4.html) which explains this assignment rather in verbose and gives a good hint for a similar GUI realization.

@@ -27,3 +27,7 @@ Then, for each tick of the clock ( i. e., each repetition of a loop), display an
 To realize graphic presentation, refer to the site [here](http://www.dreamincode.net/forums/topic/236223-animating-an-image-in-swing-utilizing-the-swing-timer/). You should be able to reverse-engineer the mechanism to realize graphic motions. As optional extra points (2 points), realize go/quit buttons and edit capability to change the number of squares. Chapter 12 - 13 of the textbook covers Swing-based GUI development introduction. See the image of sample implementation below.
 
 [Exporting Jar files](http://stackoverflow.com/questions/6845231/how-to-correctly-get-image-from-resources-folder-in-netbeans)
+
+![alt text](https://github.com/venegu/soft-design/raw/master/images/T-H-part1.png "Game Example 1")
+
+![alt text](https://github.com/venegu/soft-design/raw/master/images/T-H-part2.png "Game Example 2 - Winning")
