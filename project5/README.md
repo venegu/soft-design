@@ -4,7 +4,7 @@ This assignment is to exercise GUI implementation based on Swing Java Foundation
 
 [ The following image set is from my implementation of C++ version. Java version will be produced and the image will be replaced with it. ]
 
-![alt text](https://github.com/venegu/soft-design/raw/master/images/1prog5.png "Project 5 Image 1") ![alt text](https://github.com/venegu/soft-design/raw/master/images/2prog5-Fig.png "Project 5 Image 2")
+![alt text](https://github.com/venegu/soft-design/raw/master/images/1prog5.png "Project 5 Image 1") ![alt text](https://github.com/venegu/soft-design/raw/master/images/2prog5.png "Project 5 Image 2")
 
 The "Motion Memu" buttom expands when pushed, and shows a vertical tab selection of selection of "expand," "shrink," and "rotate" as shown above (right-hand side). An "expand" option increases the size of area 10% more. The expanded rectrangle will be shown by red-colored lines as well as the increases area size, while a "shrink" option does the reverse motion in that the size of area reduces 10% and the new rectangle is shown by blue-colored lines. These operations can be applied repeatedly. 
 
