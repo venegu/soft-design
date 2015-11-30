@@ -26,9 +26,9 @@ It is very unlikely that adding three buttons will result in errors, but errors 
 
 #### Wireframes of Difficulty Levels
 
-<img src="https://github.com/venegu/soft-design/raw/master/images/hard.png" width="300">
-<img src="https://github.com/venegu/soft-design/raw/master/images/med.png" width="300">
-<img src="https://github.com/venegu/soft-design/raw/master/images/easy.png" width="300">
+<img src="https://github.com/venegu/soft-design/raw/master/images/hard.png" width="285">
+<img src="https://github.com/venegu/soft-design/raw/master/images/med.png" width="285">
+<img src="https://github.com/venegu/soft-design/raw/master/images/easy.png" width="285">
 
 ## 2. Randomized Number of Ships
 A way to make the game more challenging is to randomize the number of ships. This will make the game more surprising and fun. This feature will occur in the background, thus __there will be no input from the user, only output from the program__ in the form of a randomized number of ships.
